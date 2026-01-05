@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>35 MINUTE DAILY WORKOUT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --energy-orange: #FF6B35;
+            --electric-yellow: #F7C948;
+            --deep-charcoal: #1A1A1D;
+            --slate: #2E2E32;
+            --vibrant-cyan: #00D9FF;
+            --pure-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--deep-charcoal);
+            color: var(--pure-white);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 20px, var(--pure-white) 20px, var(--pure-white) 21px),
+                repeating-linear-gradient(-45deg, transparent, transparent 20px, var(--pure-white) 20px, var(--pure-white) 21px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--energy-orange), var(--electric-yellow), var(--vibrant-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.2) saturate(1.3); }
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--electric-yellow);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+        }
+
+        .date-display {
+            display: inline-block;
+            background: var(--slate);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            margin: 2rem 0;
+            border: 2px solid var(--energy-orange);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--energy-orange), #FF8C42);
+            color: var(--pure-white);
+            border: none;
+            padding: 1.25rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Archivo', sans-serif;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .generate-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .workout-container {
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .workout-summary {
+            background: linear-gradient(135deg, var(--slate), #3A3A3F);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--electric-yellow);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .workout-summary h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.08em;
+            color: var(--electric-yellow);
+            margin-bottom: 1rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--vibrant-cyan);
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        .exercise-block {
+            background: var(--slate);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid var(--energy-orange);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out both;
+        }
+
+        .exercise-block:nth-child(even) {
+            border-left-color: var(--vibrant-cyan);
+            animation-delay: 0.1s;
+        }
+
+        .exercise-block:nth-child(3n) {
+            border-left-color: var(--electric-yellow);
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .exercise-block:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .exercise-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+            color: var(--pure-white);
+        }
+
+        .exercise-duration {
+            background: var(--energy-orange);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .exercise-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-tips {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            margin-top: 1rem;
+        }
+
+        .tips-title {
+            font-weight: 700;
+            color: var(--vibrant-cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--energy-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            .exercise-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <h1>DAILY WORKOUT</h1>
+            <p class="tagline">35 Minutes to Peak Performance</p>
+            <div class="date-display" id="dateDisplay"></div>
+            <div id="userProfileBadge" style="display: none; margin-top: 1rem;">
+                <div style="display: inline-block; background: rgba(0, 217, 255, 0.2); padding: 0.75rem 1.5rem; border-radius: 50px; border: 2px solid var(--vibrant-cyan);">
+                    <span style="font-weight: 700; color: var(--vibrant-cyan);">👤 <span id="displayNameSpan"></span></span>
+                    <span style="margin-left: 0.75rem; color: rgba(255, 255, 255, 0.6);">@<span id="usernameSpan"></span></span>
+                </div>
+            </div>
+        </header>
+
+        <div style="text-align: center;">
+            <button class="generate-btn" id="generateBtn">
+                <span style="position: relative; z-index: 1;">Generate Today's Workout</span>
+            </button>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="generate-btn" id="viewStatsBtn" style="background: linear-gradient(135deg, var(--vibrant-cyan), #00B8D4); box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4); padding: 1rem 2rem; font-size: 1rem;">
+                    <span style="position: relative; z-index: 1;">📊 My Progress</span>
+                </button>
+                <button class="generate-btn" id="viewSocialBtn" style="background: linear-gradient(135deg, var(--electric-yellow), #F4A300); box-shadow: 0 10px 30px rgba(247, 201, 72, 0.4); padding: 1rem 2rem; font-size: 1rem;">
+                    <span style="position: relative; z-index: 1;">👥 Friends & Feed</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="socialContainer" class="hidden"></div>
+        <div id="statsContainer" class="hidden"></div>
+        <div id="workoutContainer" class="hidden"></div>
+
+        <footer>
+            <p><strong>Your Weekly Training Plan:</strong></p>
+            <p style="margin-top: 0.5rem; line-height: 1.8;">
+                Mon: HIIT 🔥 | Tue: Upper Body 💪 | Wed: Recovery 🧘 | Thu: Lower Body & Core 💪 | Fri: Cross Training ⚡ | Sat: HIIT 🔥 | Sun: Recovery 🧘
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem;">Consistent workouts. Smart recovery. Maximum results.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Display today's date
+        const dateDisplay = document.getElementById('dateDisplay');
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateDisplay.textContent = today.toLocaleDateString('en-US', options);
+
+        // User Profile Management
+        let currentUser = null;
+
+        async function initializeUser() {
+            try {
+                const userData = await window.storage.get('current-user');
+                if (userData) {
+                    currentUser = JSON.parse(userData.value);
+                } else {
+                    // Show profile setup
+                    showProfileSetup();
+                }
+            } catch (error) {
+                console.log('No existing user, showing setup');
+                showProfileSetup();
+            }
+        }
+
+        async function createProfile(username, displayName) {
+            const userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            currentUser = {
+                id: userId,
+                username: username,
+                displayName: displayName,
+                createdAt: new Date().toISOString(),
+                friends: []
+            };
+            
+            try {
+                await window.storage.set('current-user', JSON.stringify(currentUser));
+                await window.storage.set(`profile:${userId}`, JSON.stringify(currentUser), true); // shared
+                return true;
+            } catch (error) {
+                console.error('Error creating profile:', error);
+                return false;
+            }
+        }
+
+        async function updateProfile(updates) {
+            currentUser = { ...currentUser, ...updates };
+            await window.storage.set('current-user', JSON.stringify(currentUser));
+            await window.storage.set(`profile:${currentUser.id}`, JSON.stringify(currentUser), true);
+        }
+
+        function showProfileSetup() {
+            const container = document.getElementById('workoutContainer');
+            container.innerHTML = `
+                <div class="workout-summary" style="max-width: 600px; margin: 2rem auto;">
+                    <h2 style="margin-bottom: 2rem;">Create Your Profile</h2>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.9rem; color: var(--electric-yellow); margin-bottom: 0.5rem; font-weight: 600;">Username (unique)</label>
+                        <input type="text" id="usernameInput" placeholder="e.g., fitnessfan123" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; font-size: 1rem;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.9rem; color: var(--electric-yellow); margin-bottom: 0.5rem; font-weight: 600;">Display Name</label>
+                        <input type="text" id="displayNameInput" placeholder="e.g., Alex Smith" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; font-size: 1rem;">
+                    </div>
+                    <button onclick="submitProfile()" style="width: 100%; background: linear-gradient(135deg, var(--energy-orange), #FF8C42); color: white; border: none; padding: 1rem; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 8px; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);">
+                        Create Profile & Start Training
+                    </button>
+                </div>
+            `;
+            container.classList.remove('hidden');
+        }
+
+        window.submitProfile = async function() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const displayName = document.getElementById('displayNameInput').value.trim();
+            
+            if (!username || !displayName) {
+                alert('Please fill in both fields!');
+                return;
+            }
+            
+            const success = await createProfile(username, displayName);
+            if (success) {
+                document.getElementById('workoutContainer').classList.add('hidden');
+                document.getElementById('generateBtn').click();
+            }
+        }
+
+        // Fitness data storage functions
+        async function saveWorkoutCompletion(workoutData) {
+            if (!currentUser) return false;
+            
+            try {
+                const dateKey = `workout:${currentUser.id}:${getTodayDateKey()}`;
+                const completionData = {
+                    userId: currentUser.id,
+                    username: currentUser.username,
+                    displayName: currentUser.displayName,
+                    date: new Date().toISOString(),
+                    workoutType: workoutData.workoutType,
+                    dayName: workoutData.dayName,
+                    totalTime: workoutData.totalTime,
+                    exercisesCompleted: workoutData.exercises.length,
+                    completed: true
+                };
+                
+                // Save personal workout
+                await window.storage.set(dateKey, JSON.stringify(completionData));
+                
+                // Save to shared feed for friends to see
+                const feedKey = `feed:${currentUser.id}:${Date.now()}`;
+                await window.storage.set(feedKey, JSON.stringify(completionData), true);
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving workout:', error);
+                return false;
+            }
+        }
+
+        async function saveExercisePerformance(exerciseName, performanceData) {
+            if (!currentUser) return;
+            
+            try {
+                const perfKey = `performance:${currentUser.id}:${exerciseName}:${getTodayDateKey()}`;
+                const data = {
+                    ...performanceData,
+                    userId: currentUser.id,
+                    username: currentUser.username
+                };
+                await window.storage.set(perfKey, JSON.stringify(data));
+            } catch (error) {
+                console.error('Error saving performance:', error);
+            }
+        }
+
+        async function getWorkoutHistory(limit = 30) {
+            if (!currentUser) return [];
+            
+            try {
+                const result = await window.storage.list(`workout:${currentUser.id}:`);
+                if (!result || !result.keys) return [];
+                
+                const historyPromises = result.keys.slice(0, limit).map(async (key) => {
+                    try {
+                        const data = await window.storage.get(key);
+                        return data ? JSON.parse(data.value) : null;
+                    } catch (error) {
+                        return null;
+                    }
+                });
+                
+                const history = await Promise.all(historyPromises);
+                return history.filter(item => item !== null).sort((a, b) => 
+                    new Date(b.date) - new Date(a.date)
+                );
+            } catch (error) {
+                console.error('Error getting workout history:', error);
+                return [];
+            }
+        }
+
+        async function getExerciseHistory(exerciseName, limit = 10) {
+            if (!currentUser) return [];
+            
+            try {
+                const result = await window.storage.list(`performance:${currentUser.id}:${exerciseName}:`);
+                if (!result || !result.keys) return [];
+                
+                const historyPromises = result.keys.slice(0, limit).map(async (key) => {
+                    try {
+                        const data = await window.storage.get(key);
+                        return data ? JSON.parse(data.value) : null;
+                    } catch (error) {
+                        return null;
+                    }
+                });
+                
+                const history = await Promise.all(historyPromises);
+                return history.filter(item => item !== null);
+            } catch (error) {
+                console.error('Error getting exercise history:', error);
+                return [];
+            }
+        }
+
+        // Friend Management
+        async function addFriend(friendUsername) {
+            if (!currentUser) return false;
+            
+            try {
+                // Search for user by username
+                const result = await window.storage.list('profile:', true);
+                if (!result || !result.keys) return false;
+                
+                for (let key of result.keys) {
+                    try {
+                        const profileData = await window.storage.get(key, true);
+                        if (profileData) {
+                            const profile = JSON.parse(profileData.value);
+                            if (profile.username === friendUsername && profile.id !== currentUser.id) {
+                                // Add friend
+                                if (!currentUser.friends.includes(profile.id)) {
+                                    currentUser.friends.push(profile.id);
+                                    await updateProfile({ friends: currentUser.friends });
+                                    return true;
+                                }
+                                return false; // Already friends
+                            }
+                        }
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                return false; // User not found
+            } catch (error) {
+                console.error('Error adding friend:', error);
+                return false;
+            }
+        }
+
+        async function getFriendsActivity(limit = 20) {
+            if (!currentUser || !currentUser.friends || currentUser.friends.length === 0) {
+                return [];
+            }
+            
+            try {
+                const activities = [];
+                
+                for (let friendId of currentUser.friends) {
+                    try {
+                        const result = await window.storage.list(`feed:${friendId}:`, true);
+                        if (result && result.keys) {
+                            for (let key of result.keys.slice(0, 5)) {
+                                try {
+                                    const data = await window.storage.get(key, true);
+                                    if (data) {
+                                        activities.push(JSON.parse(data.value));
+                                    }
+                                } catch (error) {
+                                    continue;
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                
+                return activities.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
+            } catch (error) {
+                console.error('Error getting friends activity:', error);
+                return [];
+            }
+        }
+
+        async function getFriendProfiles() {
+            if (!currentUser || !currentUser.friends || currentUser.friends.length === 0) {
+                return [];
+            }
+            
+            const profiles = [];
+            for (let friendId of currentUser.friends) {
+                try {
+                    const profileData = await window.storage.get(`profile:${friendId}`, true);
+                    if (profileData) {
+                        profiles.push(JSON.parse(profileData.value));
+                    }
+                } catch (error) {
+                    continue;
+                }
+            }
+            return profiles;
+        }
+
+        async function getFriendStats(friendId) {
+            try {
+                const result = await window.storage.list(`workout:${friendId}:`, true);
+                if (!result || !result.keys) return null;
+                
+                const workouts = [];
+                for (let key of result.keys.slice(0, 30)) {
+                    try {
+                        const data = await window.storage.get(key, true);
+                        if (data) {
+                            workouts.push(JSON.parse(data.value));
+                        }
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                
+                return {
+                    totalWorkouts: workouts.length,
+                    totalMinutes: workouts.reduce((sum, w) => sum + (w.totalTime || 0), 0),
+                    lastWorkout: workouts.length > 0 ? workouts[0].date : null
+                };
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function getTodayDateKey() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        async function getStats() {
+            const history = await getWorkoutHistory(90);
+            const totalWorkouts = history.length;
+            const last7Days = history.filter(w => {
+                const workoutDate = new Date(w.date);
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                return workoutDate >= sevenDaysAgo;
+            }).length;
+            
+            const workoutTypes = history.reduce((acc, w) => {
+                acc[w.workoutType] = (acc[w.workoutType] || 0) + 1;
+                return acc;
+            }, {});
+
+            return {
+                totalWorkouts,
+                last7Days,
+                workoutTypes,
+                totalMinutes: history.reduce((sum, w) => sum + (w.totalTime || 0), 0)
+            };
+        }
+
+        // Weekly workout schedule - cohesive program to avoid overtraining
+        const weeklySchedule = {
+            0: { // Sunday
+                type: 'Recovery & Stretching',
+                focus: 'Full body mobility and flexibility',
+                intensity: 'Low'
+            },
+            1: { // Monday
+                type: 'HIIT',
+                focus: 'Full body high intensity',
+                intensity: 'High',
+                muscleGroups: ['full-body']
+            },
+            2: { // Tuesday
+                type: 'Strength',
+                focus: 'Upper body push & pull',
+                intensity: 'Medium-High',
+                muscleGroups: ['chest', 'back', 'shoulders', 'arms']
+            },
+            3: { // Wednesday
+                type: 'Recovery & Stretching',
+                focus: 'Active recovery and deep stretching',
+                intensity: 'Low'
+            },
+            4: { // Thursday
+                type: 'Strength',
+                focus: 'Lower body & core',
+                intensity: 'Medium-High',
+                muscleGroups: ['legs', 'glutes', 'core']
+            },
+            5: { // Friday
+                type: 'Cross Training',
+                focus: 'Functional fitness & conditioning',
+                intensity: 'Medium-High',
+                muscleGroups: ['full-body']
+            },
+            6: { // Saturday
+                type: 'HIIT',
+                focus: 'Metabolic conditioning',
+                intensity: 'High',
+                muscleGroups: ['full-body']
+            }
+        };
+        
+        const exerciseDatabase = {
+            warmup: [
+                { name: 'Jumping Jacks', duration: 2, description: 'Full body dynamic warm-up', tips: 'Keep a steady rhythm and land softly on your feet' },
+                { name: 'Arm Circles & Shoulder Rolls', duration: 2, description: 'Dynamic shoulder mobility', tips: 'Make large circles, both forward and backward' },
+                { name: 'Leg Swings', duration: 1, description: 'Hip mobility and activation', tips: 'Swing each leg forward/back and side to side' },
+                { name: 'Inchworms', duration: 2, description: 'Full body mobility', tips: 'Walk hands out to plank, walk feet to hands' },
+                { name: 'Bodyweight Squats', duration: 2, description: 'Lower body activation', tips: 'Full range of motion, controlled tempo' }
+            ],
+            
+            // HIIT Exercises (Monday & Saturday - Full Body)
+            hiit: [
+                { name: 'Burpees', duration: 3, reps: '30 sec work / 30 sec rest', description: 'Full body explosive HIIT movement', tips: 'Go all out during work periods, rest completely', muscleGroups: ['full-body'] },
+                { name: 'Mountain Climbers', duration: 3, reps: '40 sec work / 20 sec rest', description: 'High intensity core and cardio', tips: 'Drive knees fast, maintain plank position', muscleGroups: ['core', 'shoulders'] },
+                { name: 'Jump Squats', duration: 3, reps: '30 sec work / 30 sec rest', description: 'Explosive lower body power', tips: 'Land softly, explode up powerfully', muscleGroups: ['legs', 'glutes'] },
+                { name: 'High Knees Sprint', duration: 3, reps: '40 sec work / 20 sec rest', description: 'Maximum effort cardio blast', tips: 'Drive knees to chest height, pump arms hard', muscleGroups: ['legs'] },
+                { name: 'Plank Jacks', duration: 3, reps: '40 sec work / 20 sec rest', description: 'Core stability with cardio', tips: 'Keep hips stable, jump feet wide and together', muscleGroups: ['core'] },
+                { name: 'Box Jumps', duration: 4, reps: '30 sec work / 30 sec rest', description: 'Plyometric leg power', tips: 'Land with soft knees, step down safely', muscleGroups: ['legs', 'glutes'] },
+                { name: 'Speed Skaters', duration: 3, reps: '40 sec work / 20 sec rest', description: 'Lateral explosive movement', tips: 'Push off hard, land under control', muscleGroups: ['legs', 'glutes'] },
+                { name: 'Tuck Jumps', duration: 3, reps: '20 sec work / 40 sec rest', description: 'Maximum vertical power', tips: 'Pull knees to chest, land softly', muscleGroups: ['legs'] }
+            ],
+            
+            // Upper Body Strength (Tuesday)
+            strengthUpper: [
+                { name: 'Push-ups (Multiple Variations)', duration: 4, reps: '4 sets of 12-15 reps', description: 'Upper body pressing strength', tips: 'Try wide, narrow, and diamond variations', muscleGroups: ['chest', 'triceps', 'shoulders'] },
+                { name: 'Bent Over Rows', duration: 4, reps: '4 sets of 12 reps', description: 'Back and bicep strength', tips: 'Hinge at hips, pull elbows back and squeeze', muscleGroups: ['back', 'biceps'] },
+                { name: 'Overhead Press', duration: 4, reps: '3 sets of 10 reps', description: 'Shoulder and tricep strength', tips: 'Press straight overhead, engage core', muscleGroups: ['shoulders', 'triceps'] },
+                { name: 'Chest Press', duration: 4, reps: '3 sets of 12 reps', description: 'Chest and tricep strength', tips: 'Control the weight down, press powerfully up', muscleGroups: ['chest', 'triceps'] },
+                { name: 'Pull-ups / Inverted Rows', duration: 4, reps: '3 sets of 8-10 reps', description: 'Back and bicep power', tips: 'Pull chest to bar, control descent', muscleGroups: ['back', 'biceps'] },
+                { name: 'Pike Push-ups', duration: 3, reps: '3 sets of 10 reps', description: 'Shoulder strength builder', tips: 'Hips high, press head through arms', muscleGroups: ['shoulders'] },
+                { name: 'Tricep Dips', duration: 3, reps: '3 sets of 12 reps', description: 'Triceps isolation', tips: 'Keep elbows back, full range of motion', muscleGroups: ['triceps'] }
+            ],
+            
+            // Lower Body Strength (Thursday)
+            strengthLower: [
+                { name: 'Goblet Squats', duration: 4, reps: '4 sets of 12 reps', description: 'Lower body compound strength', tips: 'Hold weight at chest, sit back and down', muscleGroups: ['legs', 'glutes'] },
+                { name: 'Bulgarian Split Squats', duration: 4, reps: '3 sets of 10 per leg', description: 'Unilateral leg strength builder', tips: 'Back foot elevated, front knee tracks over toes', muscleGroups: ['legs', 'glutes'] },
+                { name: 'Romanian Deadlifts', duration: 4, reps: '4 sets of 12 reps', description: 'Posterior chain strength', tips: 'Hinge at hips, slight knee bend, feel hamstring stretch', muscleGroups: ['hamstrings', 'glutes'] },
+                { name: 'Walking Lunges', duration: 4, reps: '3 sets of 20 total steps', description: 'Dynamic leg strength', tips: 'Step far, keep torso upright, drive through heel', muscleGroups: ['legs', 'glutes'] },
+                { name: 'Glute Bridges', duration: 3, reps: '3 sets of 15 reps', description: 'Glute activation and strength', tips: 'Squeeze glutes at top, control descent', muscleGroups: ['glutes', 'hamstrings'] },
+                { name: 'Plank Hold', duration: 3, reps: '3 sets of 45-60 sec', description: 'Core stabilization', tips: 'Engage abs, keep hips level with shoulders', muscleGroups: ['core'] },
+                { name: 'Russian Twists', duration: 3, reps: '3 sets of 20 twists', description: 'Oblique strength', tips: 'Rotate torso, touch ground on each side', muscleGroups: ['core'] }
+            ],
+            
+            // Cross Training (Friday - Full Body Functional)
+            crosstraining: [
+                { name: 'Kettlebell Swings', duration: 3, reps: '15-20 swings', description: 'Power endurance movement', tips: 'Hip hinge, explosive hip drive, tight core', muscleGroups: ['full-body'] },
+                { name: 'Thrusters', duration: 4, reps: '12-15 reps', description: 'Full body compound movement', tips: 'Squat to overhead press in one fluid motion', muscleGroups: ['full-body'] },
+                { name: 'Renegade Rows', duration: 4, reps: '10 per side', description: 'Core stability with pulling strength', tips: 'Maintain plank while rowing, no rotation', muscleGroups: ['back', 'core'] },
+                { name: 'Wall Balls', duration: 3, reps: '15-20 reps', description: 'Lower body power to upper body throw', tips: 'Squat depth, explosive stand, throw to target', muscleGroups: ['full-body'] },
+                { name: 'Medicine Ball Slams', duration: 3, reps: '15 reps', description: 'Full body explosive power', tips: 'Reach high, slam down hard, athletic stance', muscleGroups: ['full-body'] },
+                { name: 'Bear Crawls', duration: 3, reps: '30-45 seconds', description: 'Full body coordination and strength', tips: 'Knees hover, move opposite hand and foot', muscleGroups: ['full-body'] },
+                { name: 'Devil Press', duration: 4, reps: '8-10 reps', description: 'Advanced full body movement', tips: 'Burpee with weights, snatch to overhead', muscleGroups: ['full-body'] }
+            ],
+            
+            // Recovery & Stretching (Wednesday & Sunday)
+            stretching: [
+                { name: 'Deep Breathing & Meditation', duration: 3, description: 'Mental recovery and breath work', tips: 'Focus on slow, deep breaths. Clear your mind' },
+                { name: 'Cat-Cow Stretch', duration: 2, description: 'Spinal mobility and flexibility', tips: 'Move slowly between arched and rounded back positions' },
+                { name: 'World\'s Greatest Stretch', duration: 3, description: 'Full body dynamic mobility', tips: 'Lunge position with rotation, hold and breathe deeply' },
+                { name: 'Pigeon Pose', duration: 3, description: 'Deep hip opener', tips: 'Hold each side for 90 seconds, breathe through discomfort' },
+                { name: 'Seated Forward Fold', duration: 2, description: 'Hamstring and lower back stretch', tips: 'Reach for toes, keep back straight, hold the stretch' },
+                { name: 'Thread the Needle', duration: 2, description: 'Shoulder and upper back mobility', tips: 'Thread arm under body, feel stretch in shoulder' },
+                { name: 'Couch Stretch', duration: 3, description: 'Hip flexor deep stretch', tips: 'Back knee against wall, drive hips forward gently' },
+                { name: 'Chest Opener on Foam Roller', duration: 2, description: 'Thoracic spine and chest stretch', tips: 'Lie on roller, arms out wide, breathe deeply' },
+                { name: 'Frog Stretch', duration: 3, description: 'Inner thigh and hip mobility', tips: 'Knees wide, slowly sink hips back, hold position' },
+                { name: 'Supine Twist', duration: 2, description: 'Spinal rotation and release', tips: 'Knees fall to one side, shoulders flat, hold each side' },
+                { name: 'Standing Quad Stretch', duration: 2, description: 'Front of leg flexibility', tips: 'Pull heel to glutes, hold for 60 seconds each leg' },
+                { name: 'Downward Dog', duration: 2, description: 'Full body stretch and recovery', tips: 'Press heels toward ground, straighten legs gradually' },
+                { name: 'Child\'s Pose', duration: 3, description: 'Restorative full body relaxation', tips: 'Sink hips to heels, reach arms forward, breathe deeply' },
+                { name: 'Shoulder Rolls & Neck Stretches', duration: 2, description: 'Upper body tension release', tips: 'Gentle circles, hold neck stretches for 30 seconds' }
+            ],
+            
+            cooldown: [
+                { name: 'Walk and Breathe', duration: 2, description: 'Active recovery to lower heart rate', tips: 'Deep breaths, slow pace, let heart rate come down' },
+                { name: 'Standing Quad Stretch', duration: 1, description: 'Front of leg flexibility', tips: 'Hold ankle, pull heel to glutes, keep knees together' },
+                { name: 'Hamstring Stretch', duration: 1, description: 'Posterior chain flexibility', tips: 'Reach toward toes, keep back straight' },
+                { name: 'Hip Flexor Stretch', duration: 1, description: 'Hip mobility and flexibility', tips: 'Lunge position, drive hips forward gently' },
+                { name: 'Shoulder & Chest Stretch', duration: 1, description: 'Upper body flexibility', tips: 'Hands behind back, open chest, pull shoulders back' },
+                { name: 'Child\'s Pose', duration: 2, description: 'Full body relaxation stretch', tips: 'Sink hips to heels, reach arms forward, breathe deeply' },
+                { name: 'Spinal Twist', duration: 1, description: 'Back and core mobility', tips: 'Seated or lying, gentle twist to each side' }
+            ]
+        };
+
+        // Seeded random number generator for consistent daily workouts
+        function seededRandom(seed) {
+            const x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function getDailySeed() {
+            const today = new Date();
+            return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        }
+
+        function shuffleArray(array, seed) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom(seed + i) * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateWorkout() {
+            const seed = getDailySeed();
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Get today's scheduled workout
+            const todaySchedule = weeklySchedule[dayOfWeek];
+            const workoutType = todaySchedule.type;
+            
+            let workout = [];
+            let totalTime = 0;
+
+            // Stretching days (Wednesday & Sunday) - different structure
+            if (workoutType === 'Recovery & Stretching') {
+                // Light warmup (3 minutes)
+                const lightWarmup = [
+                    { name: 'Gentle Walking', duration: 2, description: 'Easy pace to warm up', tips: 'Start slow, gradually increase pace slightly', category: 'Warm-up' },
+                    { name: 'Arm Swings', duration: 1, description: 'Dynamic shoulder mobility', tips: 'Gentle swinging motions, loosen shoulders', category: 'Warm-up' }
+                ];
+                lightWarmup.forEach(ex => {
+                    workout.push(ex);
+                    totalTime += ex.duration;
+                });
+
+                // Main stretching session (30 minutes)
+                const stretchingExercises = shuffleArray(exerciseDatabase.stretching, seed);
+                let stretchTime = 0;
+                stretchingExercises.forEach(exercise => {
+                    if (stretchTime < 30) {
+                        workout.push({ ...exercise, category: 'Recovery Stretch' });
+                        totalTime += exercise.duration;
+                        stretchTime += exercise.duration;
+                    }
+                });
+
+                // Relaxation cooldown (2 minutes)
+                workout.push({
+                    name: 'Savasana / Final Relaxation',
+                    duration: 2,
+                    description: 'Complete body relaxation',
+                    tips: 'Lie flat, close eyes, focus on breathing and letting go of tension',
+                    category: 'Cool-down'
+                });
+                totalTime += 2;
+
+                return {
+                    exercises: workout,
+                    totalTime,
+                    workoutType,
+                    workoutFocus: todaySchedule.focus,
+                    dayName: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
+                    weekInfo: getWeekInfo(dayOfWeek)
+                };
+            }
+
+            // Regular workout days - Warmup (5 minutes)
+            const warmupExercises = shuffleArray(exerciseDatabase.warmup, seed);
+            let warmupTime = 0;
+            warmupExercises.forEach(exercise => {
+                if (warmupTime < 5) {
+                    workout.push({ ...exercise, category: 'Warm-up' });
+                    totalTime += exercise.duration;
+                    warmupTime += exercise.duration;
+                }
+            });
+
+            // Main workout (26 minutes) - based on day of week
+            let mainWorkout = [];
+            let mainTime = 0;
+            
+            if (workoutType === 'HIIT') {
+                // Monday & Saturday - HIIT Full Body
+                const hiitExercises = shuffleArray(exerciseDatabase.hiit, seed + 1);
+                const selectedExercises = hiitExercises.slice(0, 6);
+                
+                // Do 4 rounds
+                for (let round = 1; round <= 4; round++) {
+                    selectedExercises.forEach((exercise) => {
+                        if (mainTime < 26) {
+                            mainWorkout.push({ 
+                                ...exercise, 
+                                category: `HIIT - Round ${round}`,
+                                roundInfo: `Round ${round} of 4`
+                            });
+                            mainTime += exercise.duration;
+                        }
+                    });
+                }
+            } else if (workoutType === 'Strength' && dayOfWeek === 2) {
+                // Tuesday - Upper Body Strength
+                const upperExercises = shuffleArray(exerciseDatabase.strengthUpper, seed + 2);
+                upperExercises.forEach(exercise => {
+                    if (mainTime < 26) {
+                        mainWorkout.push({ ...exercise, category: 'Upper Body Strength' });
+                        mainTime += exercise.duration;
+                    }
+                });
+            } else if (workoutType === 'Strength' && dayOfWeek === 4) {
+                // Thursday - Lower Body & Core Strength
+                const lowerExercises = shuffleArray(exerciseDatabase.strengthLower, seed + 3);
+                lowerExercises.forEach(exercise => {
+                    if (mainTime < 26) {
+                        mainWorkout.push({ ...exercise, category: 'Lower Body & Core' });
+                        mainTime += exercise.duration;
+                    }
+                });
+            } else if (workoutType === 'Cross Training') {
+                // Friday - Cross Training
+                const crossExercises = shuffleArray(exerciseDatabase.crosstraining, seed + 4);
+                crossExercises.forEach(exercise => {
+                    if (mainTime < 26) {
+                        mainWorkout.push({ ...exercise, category: 'Cross Training' });
+                        mainTime += exercise.duration;
+                    }
+                });
+            }
+
+            workout = workout.concat(mainWorkout);
+            totalTime += mainTime;
+
+            // Cooldown (4 minutes)
+            const cooldownExercises = shuffleArray(exerciseDatabase.cooldown, seed + 5);
+            let cooldownTime = 0;
+            cooldownExercises.forEach(exercise => {
+                if (cooldownTime < 4) {
+                    workout.push({ ...exercise, category: 'Cool-down' });
+                    totalTime += exercise.duration;
+                    cooldownTime += exercise.duration;
+                }
+            });
+
+            return { 
+                exercises: workout, 
+                totalTime,
+                workoutType,
+                workoutFocus: todaySchedule.focus,
+                dayName: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
+                weekInfo: getWeekInfo(dayOfWeek)
+            };
+        }
+
+        function getWeekInfo(currentDay) {
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            return daysOfWeek.map((day, index) => ({
+                day,
+                type: weeklySchedule[index].type,
+                isCurrent: index === currentDay,
+                focus: weeklySchedule[index].focus
+            }));
+        }
+
+        function displayWorkout(workout) {
+            const container = document.getElementById('workoutContainer');
+            
+            // Get workout type badge color
+            const typeColors = {
+                'HIIT': 'var(--energy-orange)',
+                'Strength': 'var(--vibrant-cyan)',
+                'Cross Training': 'var(--electric-yellow)',
+                'Recovery & Stretching': '#9B59B6'
+            };
+
+            // Create weekly schedule display
+            const weekScheduleHtml = `
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.08em; margin-bottom: 1rem; color: var(--electric-yellow);">Weekly Training Schedule</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem;">
+                        ${workout.weekInfo.map(dayInfo => `
+                            <div style="
+                                background: ${dayInfo.isCurrent ? 'linear-gradient(135deg, var(--energy-orange), #FF8C42)' : 'rgba(255, 255, 255, 0.03)'};
+                                padding: 0.75rem 0.5rem;
+                                border-radius: 8px;
+                                text-align: center;
+                                border: ${dayInfo.isCurrent ? '2px solid var(--electric-yellow)' : '1px solid rgba(255, 255, 255, 0.1)'};
+                                ${dayInfo.isCurrent ? 'box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);' : ''}
+                            ">
+                                <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; ${dayInfo.isCurrent ? 'color: white;' : 'color: rgba(255, 255, 255, 0.9);'}">${dayInfo.day}</div>
+                                <div style="font-size: 0.65rem; ${dayInfo.isCurrent ? 'color: rgba(255, 255, 255, 0.95);' : 'color: rgba(255, 255, 255, 0.5);'} text-transform: uppercase; letter-spacing: 0.05em;">
+                                    ${dayInfo.type === 'Recovery & Stretching' ? '🧘 Recovery' : 
+                                      dayInfo.type === 'HIIT' ? '🔥 HIIT' : 
+                                      dayInfo.type === 'Strength' ? '💪 Strength' : 
+                                      '⚡ Cross'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            let html = `
+                ${weekScheduleHtml}
+                <div class="workout-summary">
+                    <div style="display: inline-block; background: ${typeColors[workout.workoutType]}; color: var(--deep-charcoal); padding: 0.5rem 1.5rem; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">
+                        ${workout.dayName} - ${workout.workoutType}
+                    </div>
+                    <h2>${workout.workoutFocus}</h2>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Total Time</div>
+                            <div class="summary-value">${workout.totalTime} MIN</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Exercises</div>
+                            <div class="summary-value">${workout.exercises.length}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Focus</div>
+                            <div class="summary-value" style="font-size: 1.1rem; text-transform: uppercase;">
+                                ${workout.workoutType === 'Recovery & Stretching' ? 'Recovery' : workout.workoutType}
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Intensity</div>
+                            <div class="summary-value" style="font-size: 1.5rem;">
+                                ${workout.workoutType === 'HIIT' ? '🔥🔥🔥' : 
+                                  workout.workoutType === 'Strength' ? '💪💪' : 
+                                  workout.workoutType === 'Cross Training' ? '⚡⚡⚡' : 
+                                  '🧘‍♀️'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            workout.exercises.forEach((exercise, index) => {
+                const repsInfo = exercise.reps ? `
+                    <div style="background: rgba(247, 201, 72, 0.15); padding: 0.75rem; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(247, 201, 72, 0.3);">
+                        <div style="font-weight: 700; color: var(--electric-yellow); margin-bottom: 0.3rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Target</div>
+                        <div style="color: rgba(255, 255, 255, 0.9);">${exercise.reps}</div>
+                    </div>
+                ` : '';
+
+                const roundInfo = exercise.roundInfo ? `
+                    <div style="display: inline-block; background: rgba(255, 107, 53, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; color: var(--energy-orange);">
+                        ${exercise.roundInfo}
+                    </div>
+                ` : '';
+
+                // Performance tracking for non-stretching exercises
+                const performanceTracking = exercise.category !== 'Recovery Stretch' && exercise.category !== 'Warm-up' && exercise.category !== 'Cool-down' ? `
+                    <div style="background: rgba(0, 217, 255, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(0, 217, 255, 0.3);">
+                        <div style="font-weight: 700; color: var(--vibrant-cyan); margin-bottom: 0.75rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">📈 Track Performance</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.3rem;">Reps/Time</label>
+                                <input type="text" class="perf-input" data-exercise="${exercise.name}" data-field="reps" placeholder="e.g., 15" style="width: 100%; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 0.9rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.3rem;">Weight/Level</label>
+                                <input type="text" class="perf-input" data-exercise="${exercise.name}" data-field="weight" placeholder="e.g., 20lbs" style="width: 100%; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 0.9rem;">
+                            </div>
+                        </div>
+                        <div style="margin-top: 0.75rem;">
+                            <label style="display: block; font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.3rem;">Notes</label>
+                            <input type="text" class="perf-input" data-exercise="${exercise.name}" data-field="notes" placeholder="How did it feel?" style="width: 100%; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 0.9rem;">
+                        </div>
+                        <button onclick="savePerformance('${exercise.name}')" style="margin-top: 0.75rem; background: var(--vibrant-cyan); color: var(--deep-charcoal); border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 0.05em;">Save</button>
+                        <div id="history-${exercise.name.replace(/\s+/g, '-')}" style="margin-top: 0.75rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);"></div>
+                    </div>
+                ` : '';
+
+                html += `
+                    <div class="exercise-block" style="animation-delay: ${index * 0.05}s">
+                        <div class="exercise-header">
+                            <div>
+                                <div style="font-size: 0.9rem; color: var(--electric-yellow); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em;">
+                                    ${exercise.category} ${roundInfo}
+                                </div>
+                                <div class="exercise-name">${exercise.name}</div>
+                            </div>
+                            <div class="exercise-duration">${exercise.duration} MIN</div>
+                        </div>
+                        <div class="exercise-description">${exercise.description}</div>
+                        ${repsInfo}
+                        <div class="exercise-tips">
+                            <div class="tips-title">💡 Pro Tip</div>
+                            <div>${exercise.tips}</div>
+                        </div>
+                        ${performanceTracking}
+                        <div class="timer-bar"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.classList.remove('hidden');
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                container.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                
+                // Add complete workout button
+                const completeBtn = document.createElement('div');
+                completeBtn.style.cssText = 'text-align: center; margin-top: 2rem;';
+                completeBtn.innerHTML = `
+                    <button onclick="markWorkoutComplete()" style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; padding: 1.25rem 3rem; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 8px; box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4); font-family: 'Archivo', sans-serif;">
+                        <span style="position: relative; z-index: 1;">✓ Mark Workout Complete</span>
+                    </button>
+                `;
+                container.appendChild(completeBtn);
+            }, 100);
+        }
+
+        // Save exercise performance
+        window.savePerformance = async function(exerciseName) {
+            const inputs = document.querySelectorAll(`[data-exercise="${exerciseName}"]`);
+            const perfData = {
+                date: new Date().toISOString(),
+                reps: '',
+                weight: '',
+                notes: ''
+            };
+            
+            inputs.forEach(input => {
+                const field = input.dataset.field;
+                perfData[field] = input.value;
+            });
+            
+            if (perfData.reps || perfData.weight || perfData.notes) {
+                await saveExercisePerformance(exerciseName, perfData);
+                
+                // Show confirmation
+                const historyDiv = document.getElementById(`history-${exerciseName.replace(/\s+/g, '-')}`);
+                if (historyDiv) {
+                    historyDiv.innerHTML = '✓ Saved! Keep crushing it!';
+                    historyDiv.style.color = 'var(--electric-yellow)';
+                    setTimeout(() => {
+                        loadExerciseHistory(exerciseName);
+                    }, 1500);
+                }
+            }
+        }
+
+        // Load exercise history
+        async function loadExerciseHistory(exerciseName) {
+            const history = await getExerciseHistory(exerciseName, 3);
+            const historyDiv = document.getElementById(`history-${exerciseName.replace(/\s+/g, '-')}`);
+            if (historyDiv && history.length > 0) {
+                const lastEntry = history[0];
+                historyDiv.innerHTML = `Last: ${lastEntry.reps || 'N/A'} ${lastEntry.weight ? `@ ${lastEntry.weight}` : ''}`;
+                historyDiv.style.color = 'rgba(255, 255, 255, 0.6)';
+            }
+        }
+
+        // Mark workout complete
+        window.markWorkoutComplete = async function() {
+            const workoutData = currentWorkout;
+            const saved = await saveWorkoutCompletion(workoutData);
+            
+            if (saved) {
+                alert('🎉 Awesome work! Workout marked as complete. Keep building that streak!');
+                // Refresh stats if visible
+                const statsContainer = document.getElementById('statsContainer');
+                if (!statsContainer.classList.contains('hidden')) {
+                    displayStats();
+                }
+            }
+        }
+
+        // Display stats and history
+        async function displayStats() {
+            const container = document.getElementById('statsContainer');
+            const stats = await getStats();
+            const history = await getWorkoutHistory(30);
+
+            const workoutTypeBreakdown = Object.entries(stats.workoutTypes)
+                .map(([type, count]) => `
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--vibrant-cyan);">${count}</div>
+                        <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.3rem;">${type}</div>
+                    </div>
+                `).join('');
+
+            const recentWorkouts = history.slice(0, 10).map(w => {
+                const date = new Date(w.date);
+                const typeEmoji = w.workoutType === 'HIIT' ? '🔥' : 
+                                 w.workoutType === 'Strength' ? '💪' : 
+                                 w.workoutType === 'Cross Training' ? '⚡' : '🧘';
+                return `
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--energy-orange); margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                            <div>
+                                <div style="font-weight: 700; color: var(--pure-white);">${typeEmoji} ${w.workoutType}</div>
+                                <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.2rem;">${w.dayName} - ${w.totalTime} minutes</div>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--electric-yellow);">
+                                ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            let html = `
+                <div style="animation: fadeInUp 0.8s ease-out;">
+                    <div class="workout-summary">
+                        <h2>Your Progress & Stats</h2>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-label">Total Workouts</div>
+                                <div class="summary-value">${stats.totalWorkouts}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Last 7 Days</div>
+                                <div class="summary-value">${stats.last7Days}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Total Minutes</div>
+                                <div class="summary-value">${stats.totalMinutes}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Current Streak</div>
+                                <div class="summary-value" style="color: var(--electric-yellow);">🔥 ${calculateStreak(history)}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${stats.totalWorkouts > 0 ? `
+                        <div class="workout-summary" style="margin-top: 2rem;">
+                            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 1.5rem; color: var(--vibrant-cyan);">Workout Type Breakdown</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                ${workoutTypeBreakdown}
+                            </div>
+                        </div>
+
+                        <div class="workout-summary" style="margin-top: 2rem;">
+                            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 1.5rem; color: var(--vibrant-cyan);">Recent Workouts</h3>
+                            ${recentWorkouts}
+                        </div>
+                    ` : `
+                        <div style="text-align: center; padding: 3rem; color: rgba(255, 255, 255, 0.6);">
+                            <p style="font-size: 1.2rem; margin-bottom: 1rem;">No workouts recorded yet!</p>
+                            <p>Complete your first workout to start tracking your progress.</p>
+                        </div>
+                    `}
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button onclick="hideStats()" style="background: var(--slate); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 1rem 2rem; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 8px; font-family: 'Archivo', sans-serif;">
+                            Back to Workout
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            container.classList.remove('hidden');
+            
+            // Hide workout and social containers
+            document.getElementById('workoutContainer').classList.add('hidden');
+            document.getElementById('socialContainer').classList.add('hidden');
+        }
+
+        function calculateStreak(history) {
+            if (history.length === 0) return 0;
+            
+            let streak = 0;
+            const sortedHistory = history.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            for (let i = 0; i < sortedHistory.length; i++) {
+                const workoutDate = new Date(sortedHistory[i].date);
+                const expectedDate = new Date();
+                expectedDate.setDate(expectedDate.getDate() - i);
+                
+                // Check if workout is from expected date (or within same day)
+                if (workoutDate.toDateString() === expectedDate.toDateString()) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        window.hideStats = function() {
+            document.getElementById('statsContainer').classList.add('hidden');
+            document.getElementById('socialContainer').classList.add('hidden');
+            document.getElementById('workoutContainer').classList.remove('hidden');
+        }
+
+        // Social Feed Functions
+        async function displaySocialFeed() {
+            const container = document.getElementById('socialContainer');
+            const friends = await getFriendProfiles();
+            const activity = await getFriendsActivity(20);
+
+            let html = `
+                <div style="animation: fadeInUp 0.8s ease-out;">
+                    <div class="workout-summary">
+                        <h2>Friends & Community</h2>
+                        <div style="margin-top: 1.5rem;">
+                            <label style="display: block; font-size: 0.9rem; color: var(--electric-yellow); margin-bottom: 0.5rem; font-weight: 600;">Add Friend by Username</label>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <input type="text" id="friendUsernameInput" placeholder="Enter username" style="flex: 1; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; font-size: 1rem;">
+                                <button onclick="addFriendHandler()" style="background: var(--energy-orange); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap;">Add Friend</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${friends.length > 0 ? `
+                        <div class="workout-summary" style="margin-top: 2rem;">
+                            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 1.5rem; color: var(--vibrant-cyan);">Your Friends (${friends.length})</h3>
+                            <div style="display: grid; gap: 1rem;">
+                                ${await Promise.all(friends.map(async friend => {
+                                    const stats = await getFriendStats(friend.id);
+                                    return `
+                                        <div style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                                                <div>
+                                                    <div style="font-size: 1.3rem; font-weight: 700; color: var(--pure-white); margin-bottom: 0.3rem;">
+                                                        ${friend.displayName}
+                                                    </div>
+                                                    <div style="color: var(--vibrant-cyan); font-size: 0.9rem;">@${friend.username}</div>
+                                                </div>
+                                                ${stats ? `
+                                                    <div style="text-align: right;">
+                                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--electric-yellow);">${stats.totalWorkouts}</div>
+                                                        <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">workouts</div>
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                            ${stats ? `
+                                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                                                    <div>
+                                                        <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.2rem;">Total Minutes</div>
+                                                        <div style="font-weight: 700; color: var(--vibrant-cyan);">${stats.totalMinutes}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.2rem;">Last Workout</div>
+                                                        <div style="font-weight: 600; color: rgba(255, 255, 255, 0.9); font-size: 0.85rem;">
+                                                            ${stats.lastWorkout ? new Date(stats.lastWorkout).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    `;
+                                })).then(items => items.join(''))}
+                            </div>
+                        </div>
+                    ` : `
+                        <div style="text-align: center; padding: 2rem; margin-top: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 1.1rem;">No friends yet!</p>
+                            <p style="color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;">Add friends to see their progress and stay motivated together.</p>
+                        </div>
+                    `}
+
+                    ${activity.length > 0 ? `
+                        <div class="workout-summary" style="margin-top: 2rem;">
+                            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 1.5rem; color: var(--vibrant-cyan);">Recent Activity Feed</h3>
+                            ${activity.map(act => {
+                                const date = new Date(act.date);
+                                const typeEmoji = act.workoutType === 'HIIT' ? '🔥' : 
+                                                 act.workoutType === 'Strength' ? '💪' : 
+                                                 act.workoutType === 'Cross Training' ? '⚡' : '🧘';
+                                const timeAgo = getTimeAgo(date);
+                                return `
+                                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--energy-orange); margin-bottom: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                            <div>
+                                                <div style="font-weight: 700; color: var(--pure-white); margin-bottom: 0.3rem;">
+                                                    ${act.displayName} <span style="color: rgba(255, 255, 255, 0.5); font-weight: 400; font-size: 0.9rem;">@${act.username}</span>
+                                                </div>
+                                                <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.85rem;">${timeAgo}</div>
+                                            </div>
+                                        </div>
+                                        <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                <span style="font-size: 1.5rem;">${typeEmoji}</span>
+                                                <div>
+                                                    <div style="font-weight: 700; color: var(--electric-yellow);">Completed ${act.workoutType}</div>
+                                                    <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">${act.dayName} • ${act.totalTime} minutes</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    ` : friends.length > 0 ? `
+                        <div style="text-align: center; padding: 2rem; margin-top: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+                            <p style="color: rgba(255, 255, 255, 0.6);">No recent activity from friends yet.</p>
+                        </div>
+                    ` : ''}
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button onclick="hideSocial()" style="background: var(--slate); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 1rem 2rem; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 8px; font-family: 'Archivo', sans-serif;">
+                            Back to Workout
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            container.classList.remove('hidden');
+            
+            // Hide other containers
+            document.getElementById('workoutContainer').classList.add('hidden');
+            document.getElementById('statsContainer').classList.add('hidden');
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        window.addFriendHandler = async function() {
+            const username = document.getElementById('friendUsernameInput').value.trim();
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+            
+            const success = await addFriend(username);
+            if (success) {
+                alert(`Successfully added ${username} as a friend!`);
+                displaySocialFeed(); // Refresh
+            } else {
+                alert('User not found or already friends. Make sure they\'ve created a profile!');
+            }
+        }
+
+        window.hideSocial = function() {
+            document.getElementById('socialContainer').classList.add('hidden');
+            document.getElementById('statsContainer').classList.add('hidden');
+            document.getElementById('workoutContainer').classList.remove('hidden');
+        }
+
+        let currentWorkout = null;
+
+        // Generate workout button
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            if (!currentUser) {
+                showProfileSetup();
+                return;
+            }
+            
+            const container = document.getElementById('workoutContainer');
+            const statsContainer = document.getElementById('statsContainer');
+            const socialContainer = document.getElementById('socialContainer');
+            
+            // Hide stats and social if showing
+            statsContainer.classList.add('hidden');
+            socialContainer.classList.add('hidden');
+            
+            // Show loading
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p style="color: var(--electric-yellow); font-weight: 600; letter-spacing: 0.1em;">GENERATING YOUR WORKOUT...</p>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            
+            // Simulate loading for effect
+            setTimeout(() => {
+                const workout = generateWorkout();
+                currentWorkout = workout; // Store for completion tracking
+                displayWorkout(workout);
+                
+                // Load exercise histories
+                setTimeout(() => {
+                    workout.exercises.forEach(exercise => {
+                        if (exercise.category !== 'Recovery Stretch' && 
+                            exercise.category !== 'Warm-up' && 
+                            exercise.category !== 'Cool-down') {
+                            loadExerciseHistory(exercise.name);
+                        }
+                    });
+                }, 500);
+            }, 1500);
+        });
+
+        // View stats button
+        document.getElementById('viewStatsBtn').addEventListener('click', function() {
+            if (!currentUser) {
+                showProfileSetup();
+                return;
+            }
+            displayStats();
+        });
+
+        // View social feed button
+        document.getElementById('viewSocialBtn').addEventListener('click', function() {
+            if (!currentUser) {
+                showProfileSetup();
+                return;
+            }
+            displaySocialFeed();
+        });
+
+        // Auto-initialize on page load
+        window.addEventListener('load', async function() {
+            await initializeUser();
+            
+            if (currentUser) {
+                // Show user profile badge
+                document.getElementById('userProfileBadge').style.display = 'block';
+                document.getElementById('displayNameSpan').textContent = currentUser.displayName;
+                document.getElementById('usernameSpan').textContent = currentUser.username;
+                
+                // Auto-generate workout
+                setTimeout(() => {
+                    document.getElementById('generateBtn').click();
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
