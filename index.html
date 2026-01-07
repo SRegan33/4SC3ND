@@ -451,12 +451,11 @@
         </footer>
     </div>
 
-    <script type="module">
-        // Firebase SDK imports
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, orderBy, limit as firestoreLimit, updateDoc, arrayUnion, Timestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <script>
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyANOaf5ePwf26-NTBDra6qugOJCaiSELTk",
@@ -469,37 +468,37 @@
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const provider = new firebase.auth.GoogleAuthProvider();
 
         console.log('Firebase initialized successfully');
-        console.log('Auth:', auth);
-        console.log('Provider:', provider);
 
-        // Define auth functions IMMEDIATELY and make them global
-        window.signInWithGoogle = async function() {
+        // Auth functions available globally
+        function signInWithGoogle() {
             console.log('Sign in button clicked');
-            try {
-                console.log('Attempting sign in with popup...');
-                const result = await signInWithPopup(auth, provider);
-                console.log('Sign in successful:', result.user.email);
-            } catch (error) {
-                console.error('Error signing in:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-                alert('Error signing in: ' + error.message);
-            }
-        };
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    console.log('Sign in successful:', result.user.email);
+                })
+                .catch((error) => {
+                    console.error('Error signing in:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    alert('Error signing in: ' + error.message);
+                });
+        }
 
-        window.signOutUser = async function() {
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error('Error signing out:', error);
-            }
-        };
+        function signOutUser() {
+            auth.signOut()
+                .then(() => {
+                    console.log('Signed out successfully');
+                })
+                .catch((error) => {
+                    console.error('Error signing out:', error);
+                });
+        }
 
         // Display today's date
         const dateDisplay = document.getElementById('dateDisplay');
@@ -511,7 +510,7 @@
         let currentUser = null;
 
         // Firebase Auth State Observer
-        onAuthStateChanged(auth, async (user) => {
+        auth.onAuthStateChanged(async (user) => {
             console.log('Auth state changed:', user ? 'User signed in' : 'User signed out');
             if (user) {
                 console.log('User details:', user.email, user.displayName);
@@ -546,12 +545,12 @@
         });
 
         async function initializeUserProfile(user) {
-            const userRef = doc(db, 'users', user.uid);
-            const userSnap = await getDoc(userRef);
+            const userRef = db.collection('users').doc(user.uid);
+            const userSnap = await userRef.get();
             
-            if (!userSnap.exists()) {
+            if (!userSnap.exists) {
                 // Create new user profile
-                await setDoc(userRef, {
+                await userRef.set({
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
@@ -613,8 +612,8 @@
 
         async function updateProfile(updates) {
             if (!currentUser) return;
-            const userRef = doc(db, 'users', currentUser.id);
-            await updateDoc(userRef, updates);
+            const userRef = db.collection('users').doc(currentUser.id);
+            await userRef.update(updates);
         }
 
         // Fitness data storage functions
@@ -623,7 +622,7 @@
             if (!currentUser) return false;
             
             try {
-                const workoutRef = doc(db, 'workouts', `${currentUser.id}_${getTodayDateKey()}`);
+                const workoutRef = db.collection('workouts').doc(`${currentUser.id}_${getTodayDateKey()}`);
                 const completionData = {
                     userId: currentUser.id,
                     username: currentUser.username,
@@ -637,7 +636,7 @@
                     completed: true
                 };
                 
-                await setDoc(workoutRef, completionData);
+                await workoutRef.set(completionData);
                 return true;
             } catch (error) {
                 console.error('Error saving workout:', error);
@@ -649,7 +648,7 @@
             if (!currentUser) return;
             
             try {
-                const perfRef = doc(db, 'performance', `${currentUser.id}_${exerciseName}_${getTodayDateKey()}`);
+                const perfRef = db.collection('performance').doc(, `${currentUser.id}_${exerciseName}_${getTodayDateKey()}`);
                 const data = {
                     ...performanceData,
                     userId: currentUser.id,
@@ -657,7 +656,7 @@
                     exerciseName: exerciseName,
                     timestamp: new Date().toISOString()
                 };
-                await setDoc(perfRef, data);
+                await perfRef.set( data);
             } catch (error) {
                 console.error('Error saving performance:', error);
             }
@@ -667,14 +666,14 @@
             if (!currentUser) return [];
             
             try {
-                const workoutsRef = collection(db, 'workouts');
-                const q = query(
+                const workoutsRef = db.collection('workouts');
+                const q = db.collection
                     workoutsRef,
                     where('userId', '==', currentUser.id),
                     orderBy('date', 'desc'),
-                    firestoreLimit(limitCount)
+                    limit(limitCount)
                 );
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await .get(q);
                 return querySnapshot.docs.map(doc => doc.data());
             } catch (error) {
                 console.error('Error getting workout history:', error);
@@ -686,15 +685,15 @@
             if (!currentUser) return [];
             
             try {
-                const perfRef = collection(db, 'performance');
-                const q = query(
+                const perfRef = db.collection('performance');
+                const q = db.collection
                     perfRef,
                     where('userId', '==', currentUser.id),
                     where('exerciseName', '==', exerciseName),
                     orderBy('timestamp', 'desc'),
-                    firestoreLimit(limitCount)
+                    limit(limitCount)
                 );
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await .get(q);
                 return querySnapshot.docs.map(doc => doc.data());
             } catch (error) {
                 console.error('Error getting exercise history:', error);
@@ -708,9 +707,9 @@
             
             try {
                 // Search for user by email
-                const usersRef = collection(db, 'users');
-                const q = query(usersRef, where('email', '==', friendEmail));
-                const querySnapshot = await getDocs(q);
+                const usersRef = db.collection('users');
+                const q = db.collectionusersRef, where('email', '==', friendEmail));
+                const querySnapshot = await .get(q);
                 
                 if (querySnapshot.empty) {
                     return false;
@@ -724,8 +723,8 @@
                 }
                 
                 // Add to friends list
-                const userRef = doc(db, 'users', currentUser.id);
-                await updateDoc(userRef, {
+                const userRef = db.collection('users').doc(, currentUser.id);
+                await userRef.update( {
                     friends: arrayUnion(friendData.uid)
                 });
                 
@@ -747,23 +746,23 @@
             
             try {
                 // Get current user's friends list
-                const userRef = doc(db, 'users', currentUser.id);
-                const userSnap = await getDoc(userRef);
+                const userRef = db.collection('users').doc(, currentUser.id);
+                const userSnap = await userRef.get();
                 const userData = userSnap.data();
                 const friends = userData.friends || [];
                 
                 if (friends.length === 0) return [];
                 
                 // Get workouts from friends (Firestore 'in' limit is 10)
-                const workoutsRef = collection(db, 'workouts');
-                const q = query(
+                const workoutsRef = db.collection('workouts');
+                const q = db.collection
                     workoutsRef,
                     where('userId', 'in', friends.slice(0, 10)),
                     orderBy('date', 'desc'),
-                    firestoreLimit(limitCount)
+                    limit(limitCount)
                 );
                 
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await .get(q);
                 return querySnapshot.docs.map(doc => doc.data());
             } catch (error) {
                 console.error('Error getting friends activity:', error);
@@ -775,8 +774,8 @@
             if (!currentUser) return [];
             
             try {
-                const userRef = doc(db, 'users', currentUser.id);
-                const userSnap = await getDoc(userRef);
+                const userRef = db.collection('users').doc(, currentUser.id);
+                const userSnap = await userRef.get();
                 const userData = userSnap.data();
                 const friends = userData.friends || [];
                 
@@ -784,9 +783,9 @@
                 
                 const profiles = [];
                 for (let friendId of friends) {
-                    const friendRef = doc(db, 'users', friendId);
-                    const friendSnap = await getDoc(friendRef);
-                    if (friendSnap.exists()) {
+                    const friendRef = db.collection('users').doc(, friendId);
+                    const friendSnap = await friendRef.get();
+                    if (friendSnap.exists) {
                         profiles.push(friendSnap.data());
                     }
                 }
@@ -799,14 +798,14 @@
 
         async function getFriendStats(friendId) {
             try {
-                const workoutsRef = collection(db, 'workouts');
-                const q = query(
+                const workoutsRef = db.collection('workouts');
+                const q = db.collection
                     workoutsRef,
                     where('userId', '==', friendId),
                     orderBy('date', 'desc'),
-                    firestoreLimit(30)
+                    limit(30)
                 );
-                const querySnapshot = await getDocs(q);
+                const querySnapshot = await .get(q);
                 const workouts = querySnapshot.docs.map(doc => doc.data());
                 
                 return {
@@ -874,9 +873,9 @@
             if (!currentUser) return;
             
             try {
-                const prefRef = doc(db, 'preferences', currentUser.id);
-                const prefSnap = await getDoc(prefRef);
-                if (prefSnap.exists()) {
+                const prefRef = db.collection('preferences').doc(, currentUser.id);
+                const prefSnap = await prefRef.get();
+                if (prefSnap.exists) {
                     const data = prefSnap.data();
                     workoutPreferences = { ...workoutPreferences, ...data };
                 }
@@ -890,8 +889,8 @@
             if (!currentUser) return;
             
             try {
-                const prefRef = doc(db, 'preferences', currentUser.id);
-                await setDoc(prefRef, workoutPreferences);
+                const prefRef = db.collection('preferences').doc(, currentUser.id);
+                await prefRef.set( workoutPreferences);
             } catch (error) {
                 console.error('Error saving preferences:', error);
             }
